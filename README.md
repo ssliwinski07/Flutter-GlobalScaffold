@@ -8,4 +8,4 @@ Standard increase counter app to show the example of displaying messages after e
   
 Additional notes:
 1. I've written a custom class `FutureTracker` to track the status of future function and to display proper message after future completes.
-2. I've written a method `showMessage()` inside MessageServiceMain class, that uses SnackBar to display message. Thanks to global key, passing BuildContext is also not required as in `Fluttertoast` class
+2. I've written a method `showMessage()` inside MessageServiceMain class, that uses SnackBar to display message as an alternative for fluttertoast. Thanks to global key, passing BuildContext is also not required as in `Fluttertoast` class
