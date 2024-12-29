@@ -5,7 +5,7 @@ Standard increase counter app to show the example of displaying messages after e
 1. Used pacakges:
    - get_it - service locator - class `ServiceLocator`
    - fluttertoast - for sending simple messages (notifications for users) through the app. Passing BuildContext is not required. Have a look at the class `MessageServiceMain`.
-   - mobx & provider - simple app state management
+   - mobx & provider - simple app state management - class `CounterStore`
   
 Additional notes:
 1. I've written a custom class `FutureTracker` to track the status of future function and to display proper message after future completes.
