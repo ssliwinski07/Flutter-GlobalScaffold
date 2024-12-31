@@ -8,12 +8,12 @@ import 'package:flutter_global_scaffold/core/services.dart';
 import 'package:flutter_global_scaffold/core/trackers/future_tracker.dart';
 import 'package:flutter_global_scaffold/helpers/helpers.dart';
 
-GlobalKey<NavigatorState> navigatorKey = GlobalKey<NavigatorState>();
-
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await ServiceLocator.initializeCoreUIServices();
 
+  MessageServiceBase messageService =
+      ServiceLocator.getIt<MessageServiceBase>(instanceName: mainInstance);
   runApp(
     MultiProvider(
       providers: [
@@ -21,29 +21,42 @@ void main() async {
           create: (context) => CounterStore(),
         ),
       ],
-      child: const MyApp(),
+      child: MyApp(
+        onBuild: (context) {
+          messageService.init();
+        },
+      ),
     ),
   );
 }
 
 class MyApp extends StatelessWidget {
-  const MyApp({super.key});
+  const MyApp({super.key, required this.onBuild});
+
+  final void Function(BuildContext context) onBuild;
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      title: 'Flutter Demo',
-      navigatorKey: navigatorKey,
-      builder: FToastBuilder(),
-      debugShowCheckedModeBanner: false,
-      scaffoldMessengerKey: MessageServiceMain.scaffoldMsgKey,
-      theme: ThemeData(
-        colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
-        useMaterial3: true,
-      ),
-      home: const MyHomePage(
-        title: 'Flutter Demo Home Page',
-      ),
+    return Builder(
+      builder: (context) {
+        WidgetsBinding.instance.addPostFrameCallback((_) {
+          onBuild(context);
+        });
+        return MaterialApp(
+          title: 'Flutter Demo',
+          navigatorKey: navigatorKey,
+          builder: FToastBuilder(),
+          debugShowCheckedModeBanner: false,
+          scaffoldMessengerKey: MessageServiceMain.scaffoldMsgKey,
+          theme: ThemeData(
+            colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
+            useMaterial3: true,
+          ),
+          home: const MyHomePage(
+            title: 'Flutter Demo Home Page',
+          ),
+        );
+      },
     );
   }
 }

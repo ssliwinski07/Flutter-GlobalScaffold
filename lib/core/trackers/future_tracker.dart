@@ -6,8 +6,7 @@ class FutureTracker<T> {
     Future<T> Function() computation, {
     String? successMsg,
     required MessageServiceBase messageService,
-  })  : _messageService = messageService,
-        _successMsg = successMsg {
+  }) : _messageService = messageService {
     _future = computation();
     _futureTracker();
   }
@@ -20,7 +19,6 @@ class FutureTracker<T> {
 
   late final Future<T> _future;
   final MessageServiceBase _messageService;
-  final String? _successMsg;
   bool _isCompleted = false;
   bool _hasError = false;
   Object _error = "";

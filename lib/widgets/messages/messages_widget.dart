@@ -1,7 +1,12 @@
 import 'package:flutter/material.dart';
 
 class MessagesWidget extends StatelessWidget {
-  const MessagesWidget({super.key});
+  const MessagesWidget({
+    super.key,
+    required this.message,
+  });
+
+  final String message;
 
   @override
   Widget build(BuildContext context) {
@@ -11,14 +16,14 @@ class MessagesWidget extends StatelessWidget {
         borderRadius: BorderRadius.circular(25.0),
         color: Colors.greenAccent,
       ),
-      child: const Row(
+      child: Row(
         mainAxisSize: MainAxisSize.min,
         children: [
-          Icon(Icons.check),
-          SizedBox(
+          const Icon(Icons.check),
+          const SizedBox(
             width: 12.0,
           ),
-          Text("This is a Custom Toast"),
+          Text(message),
         ],
       ),
     );
