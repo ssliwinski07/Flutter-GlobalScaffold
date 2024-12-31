@@ -12,9 +12,6 @@ void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await ServiceLocator.initializeCoreUIServices();
 
-  MessageServiceBase messageService =
-      ServiceLocator.getIt<MessageServiceBase>(instanceName: mainInstance);
-
   runApp(
     MultiProvider(
       providers: [
@@ -22,31 +19,27 @@ void main() async {
           create: (context) => CounterStore(),
         ),
       ],
-      child: MyApp(
-        onBuild: () {
-          messageService.init();
-        },
-      ),
+      child: const MyApp(),
     ),
   );
 }
 
 class MyApp extends StatelessWidget {
-  const MyApp({super.key, this.onBuild});
+  const MyApp({super.key});
 
-  final VoidCallback? onBuild;
+  MessageServiceBase get messageService =>
+      ServiceLocator.getIt<MessageServiceBase>(instanceName: mainInstance);
 
   @override
   Widget build(BuildContext context) {
     return Builder(
       builder: (context) {
-        if (onBuild != null) {
-          WidgetsBinding.instance.addPostFrameCallback(
-            (_) {
-              onBuild!();
-            },
-          );
-        }
+        WidgetsBinding.instance.addPostFrameCallback(
+          (_) {
+            messageService.init();
+          },
+        );
+
         return MaterialApp(
           title: 'Flutter Demo',
           navigatorKey: navigatorKey,
@@ -56,8 +49,9 @@ class MyApp extends StatelessWidget {
             colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
             useMaterial3: true,
           ),
-          home: const MyHomePage(
+          home: MyHomePage(
             title: 'Flutter Demo Home Page',
+            messageService: messageService,
           ),
         );
       },
@@ -69,12 +63,11 @@ class MyHomePage extends StatelessWidget {
   const MyHomePage({
     super.key,
     required this.title,
+    required this.messageService,
   });
 
   final String title;
-
-  MessageServiceBase get messageService =>
-      ServiceLocator.getIt<MessageServiceBase>(instanceName: mainInstance);
+  final MessageServiceBase messageService;
 
   @override
   Widget build(BuildContext context) {
