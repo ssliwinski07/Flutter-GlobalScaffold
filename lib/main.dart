@@ -1,12 +1,17 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_mobx/flutter_mobx.dart';
+import 'package:fluttertoast/fluttertoast.dart';
+import 'package:provider/provider.dart';
+
 import 'package:flutter_global_scaffold/core/mobx_stores.dart';
 import 'package:flutter_global_scaffold/core/services.dart';
 import 'package:flutter_global_scaffold/core/trackers/future_tracker.dart';
 import 'package:flutter_global_scaffold/helpers/helpers.dart';
-import 'package:flutter_mobx/flutter_mobx.dart';
-import 'package:provider/provider.dart';
+
+GlobalKey<NavigatorState> navigatorKey = GlobalKey<NavigatorState>();
 
 void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
   await ServiceLocator.initializeCoreUIServices();
 
   runApp(
@@ -28,6 +33,8 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       title: 'Flutter Demo',
+      navigatorKey: navigatorKey,
+      builder: FToastBuilder(),
       debugShowCheckedModeBanner: false,
       scaffoldMessengerKey: MessageServiceMain.scaffoldMsgKey,
       theme: ThemeData(

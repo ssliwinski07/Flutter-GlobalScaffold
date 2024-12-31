@@ -1,12 +1,23 @@
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 
-import '../../services.dart';
+import '../../../main.dart';
+import 'package:flutter_global_scaffold/core/services.dart';
 import 'package:flutter_global_scaffold/helpers/helpers.dart';
+import 'package:flutter_global_scaffold/widgets/messages.dart';
 
 class MessageServiceMain implements MessageServiceBase {
   static final GlobalKey<ScaffoldMessengerState> scaffoldMsgKey =
       GlobalKey<ScaffoldMessengerState>();
+
+  late FToast fToast;
+
+  @override
+  void showMessageWidget() {
+    fToast = FToast();
+    fToast.init(navigatorKey.currentContext!);
+    fToast.showToast(child: const MessagesWidget());
+  }
 
   @override
   void showMessage(
