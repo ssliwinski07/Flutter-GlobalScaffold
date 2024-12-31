@@ -14,6 +14,7 @@ void main() async {
 
   MessageServiceBase messageService =
       ServiceLocator.getIt<MessageServiceBase>(instanceName: mainInstance);
+
   runApp(
     MultiProvider(
       providers: [
@@ -22,7 +23,7 @@ void main() async {
         ),
       ],
       child: MyApp(
-        onBuild: (context) {
+        onBuild: () {
           messageService.init();
         },
       ),
@@ -31,23 +32,26 @@ void main() async {
 }
 
 class MyApp extends StatelessWidget {
-  const MyApp({super.key, required this.onBuild});
+  const MyApp({super.key, this.onBuild});
 
-  final void Function(BuildContext context) onBuild;
+  final VoidCallback? onBuild;
 
   @override
   Widget build(BuildContext context) {
     return Builder(
       builder: (context) {
-        WidgetsBinding.instance.addPostFrameCallback((_) {
-          onBuild(context);
-        });
+        if (onBuild != null) {
+          WidgetsBinding.instance.addPostFrameCallback(
+            (_) {
+              onBuild!();
+            },
+          );
+        }
         return MaterialApp(
           title: 'Flutter Demo',
           navigatorKey: navigatorKey,
           builder: FToastBuilder(),
           debugShowCheckedModeBanner: false,
-          scaffoldMessengerKey: MessageServiceMain.scaffoldMsgKey,
           theme: ThemeData(
             colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
             useMaterial3: true,

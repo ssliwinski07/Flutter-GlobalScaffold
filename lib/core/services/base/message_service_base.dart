@@ -4,7 +4,4 @@ abstract interface class MessageServiceBase<T> {
   void init();
   void showMessage(
       {required String message, required InfoMessageType infoMessageType});
-  void showToastMessage(
-      {required String message, required InfoMessageType infoMessageType});
-  void showMessageWidget();
 }
