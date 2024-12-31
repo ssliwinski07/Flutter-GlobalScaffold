@@ -50,11 +50,11 @@ class MessagesWidget extends StatelessWidget {
   Color _getBackgroundColor(InfoMessageType infoMessageType) {
     switch (infoMessageType) {
       case InfoMessageType.info:
-        return Colors.green;
+        return Colors.green.withOpacity(0.5);
       case InfoMessageType.warning:
-        return Colors.orange;
+        return Colors.orange.withOpacity(0.5);
       case InfoMessageType.error:
-        return Colors.red;
+        return Colors.red.withOpacity(0.5);
     }
   }
 
