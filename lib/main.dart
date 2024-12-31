@@ -1,13 +1,19 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_mobx/flutter_mobx.dart';
+import 'package:fluttertoast/fluttertoast.dart';
+import 'package:provider/provider.dart';
+
 import 'package:flutter_global_scaffold/core/mobx_stores.dart';
 import 'package:flutter_global_scaffold/core/services.dart';
 import 'package:flutter_global_scaffold/core/trackers/future_tracker.dart';
 import 'package:flutter_global_scaffold/helpers/helpers.dart';
-import 'package:flutter_mobx/flutter_mobx.dart';
-import 'package:provider/provider.dart';
 
 void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
   await ServiceLocator.initializeCoreUIServices();
+
+  MessageServiceBase messageService =
+      ServiceLocator.getIt<MessageServiceBase>(instanceName: mainInstance);
 
   runApp(
     MultiProvider(
@@ -16,27 +22,45 @@ void main() async {
           create: (context) => CounterStore(),
         ),
       ],
-      child: const MyApp(),
+      child: MyApp(
+        onBuild: () {
+          messageService.init();
+        },
+      ),
     ),
   );
 }
 
 class MyApp extends StatelessWidget {
-  const MyApp({super.key});
+  const MyApp({super.key, this.onBuild});
+
+  final VoidCallback? onBuild;
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      title: 'Flutter Demo',
-      debugShowCheckedModeBanner: false,
-      scaffoldMessengerKey: MessageServiceMain.scaffoldMsgKey,
-      theme: ThemeData(
-        colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
-        useMaterial3: true,
-      ),
-      home: const MyHomePage(
-        title: 'Flutter Demo Home Page',
-      ),
+    return Builder(
+      builder: (context) {
+        if (onBuild != null) {
+          WidgetsBinding.instance.addPostFrameCallback(
+            (_) {
+              onBuild!();
+            },
+          );
+        }
+        return MaterialApp(
+          title: 'Flutter Demo',
+          navigatorKey: navigatorKey,
+          builder: FToastBuilder(),
+          debugShowCheckedModeBanner: false,
+          theme: ThemeData(
+            colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
+            useMaterial3: true,
+          ),
+          home: const MyHomePage(
+            title: 'Flutter Demo Home Page',
+          ),
+        );
+      },
     );
   }
 }

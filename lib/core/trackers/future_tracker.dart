@@ -1,6 +1,6 @@
 import 'package:flutter_global_scaffold/core/services.dart';
 import 'package:flutter_global_scaffold/core/services/base/message_service_base.dart';
-import 'package:flutter_global_scaffold/helpers/enums.dart';
+import 'package:flutter_global_scaffold/helpers/helpers.dart';
 
 class FutureTracker<T> {
   FutureTracker(
@@ -29,14 +29,17 @@ class FutureTracker<T> {
   void _futureTracker() async {
     try {
       await _future;
-      _messageService.showToastMessage(
-          message: _successMsg ?? 'Operation successful',
-          infoMessageType: InfoMessageType.info);
+      _messageService.showMessage(
+        message: _successMsg ?? 'success',
+        infoMessageType: InfoMessageType.info,
+      );
     } catch (e) {
       _hasError = true;
       _error = e;
-      _messageService.showToastMessage(
-          message: e.toString(), infoMessageType: InfoMessageType.error);
+      _messageService.showMessage(
+        message: e.toString(),
+        infoMessageType: InfoMessageType.error,
+      );
     } finally {
       _isCompleted = true;
     }
