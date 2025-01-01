@@ -12,3 +12,4 @@ Additional notes:
 1. I've written a custom class `FutureTracker` to track the status of future function and to display proper toast message after future completes.
 2. Converted `MyHomePage` widget to Stateless widget as there's no need to use Stateful widget (thanks to mobx).
 3. Tapping on notification will remove it.
+4. Value increases thanks to the function definied in class `CounterStoreBase` -> increaseCounter(). Error throw has been put there intentionally to display error messagage (error throw depends on current time).
