@@ -13,7 +13,7 @@ abstract class CounterStoreBase with Store {
   Future<void> increaseCounter() async {
     await Future.delayed(
       const Duration(
-        milliseconds: 500,
+        seconds: 1,
       ),
     );
 
