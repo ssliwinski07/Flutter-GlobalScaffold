@@ -5,6 +5,7 @@ Standard increase counter app to show the example of displaying toast messages. 
 1. Used pacakges:
    - get_it - service locator - class `ServiceLocator`
    - fluttertoast - for displaying simple toast messages all around the app. Have a look at the class `MessageServiceMain`.
+   - loader_overlay & flutter_spinkit - for displaying loading spinner when executing async function. Have a look at the class `SpinnerServiceMain` and on the widget `GlobalLoaderOverlay` that wraps up `MyHomePage` in the `main.dart`.
    - mobx & provider - simple app state management - class `CounterStore`
   
 Additional notes:
