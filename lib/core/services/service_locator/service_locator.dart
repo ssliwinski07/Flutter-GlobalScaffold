@@ -10,5 +10,7 @@ class ServiceLocator {
   static Future<void> initializeCoreUIServices() async {
     getIt.registerSingleton<MessageServiceBase>(MessageServiceMain(),
         instanceName: mainInstance);
+    getIt.registerSingleton<SpinnerServiceBase>(SpinnerServiceMain(),
+        instanceName: mainInstance);
   }
 }

@@ -1,5 +1,4 @@
 import 'package:flutter_global_scaffold/core/services.dart';
-import 'package:flutter_global_scaffold/core/services/base/message_service_base.dart';
 import 'package:flutter_global_scaffold/helpers/helpers.dart';
 
 class FutureTracker<T> {
@@ -7,8 +6,10 @@ class FutureTracker<T> {
     Future<T> Function() computation, {
     String? successMsg,
     required MessageServiceBase messageService,
+    required SpinnerServiceBase spinnerService,
   })  : _messageService = messageService,
-        _successMsg = successMsg {
+        _successMsg = successMsg,
+        _spinnerService = spinnerService {
     _future = computation();
     _futureTracker();
   }
@@ -21,6 +22,7 @@ class FutureTracker<T> {
 
   late final Future<T> _future;
   final MessageServiceBase _messageService;
+  final SpinnerServiceBase _spinnerService;
   final String? _successMsg;
   bool _isCompleted = false;
   bool _hasError = false;
@@ -28,6 +30,7 @@ class FutureTracker<T> {
 
   void _futureTracker() async {
     try {
+      _spinnerService.show();
       await _future;
       _messageService.showMessage(
         message: _successMsg ?? 'success',
@@ -42,6 +45,7 @@ class FutureTracker<T> {
       );
     } finally {
       _isCompleted = true;
+      _spinnerService.hide();
     }
   }
 }
